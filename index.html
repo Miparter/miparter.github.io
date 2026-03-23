@@ -1,11 +1,357 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spela Gratis!</title>
+
+  <!-- ═══════════════════════════════════════════
+       GOOGLE ADSENSE – byt ut ca-pub-XXXXXXXXXXXXXXXX
+  ════════════════════════════════════════════════
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9092253160238901"
+     crossorigin="anonymous"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a1a;
+      color: #fff;
+      font-family: 'Boogaloo', cursive;
+      overflow-x: hidden;
+    }
+
+    /* ── TOP BANNER ── */
+    .banner-top {
+      width: 100%;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 2px solid #ff6a00;
+    }
+
+    /* ── HERO: spelet omringat av annonser ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 160px 1fr 160px;
+      gap: 4px;
+      padding: 4px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-top {
+      grid-column: 1 / 4;
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .hero-left  { grid-column: 1; display: flex; flex-direction: column; gap: 4px; }
+    .game-cell  { grid-column: 2; }
+    .hero-right { grid-column: 3; display: flex; flex-direction: column; gap: 4px; }
+
+    .hero-bottom {
+      grid-column: 1 / 4;
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    /* Spel-iframe */
+    .game-cell iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 430px;
+      border: 3px solid #ff6a00;
+    }
+
+    /* ── AD PLACEHOLDER ── */
+    .ad {
+      background: #111827;
+      border: 2px dashed #ff6a00;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      text-align: center;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .ad::before {
+      content: 'ANNONS';
+      position: absolute;
+      top: 4px; left: 6px;
+      font-size: 0.52rem;
+      color: #2a2a2a;
+      letter-spacing: 2px;
+    }
+    .ad::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,106,0,0.05), transparent);
+      background-size: 400px 100%;
+      animation: shimmer 3s infinite linear;
+    }
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .ad .icon { position: relative; z-index: 1; font-size: 1.6rem; }
+    .ad .dim  { position: relative; z-index: 1; font-size: 0.68rem; color: #333; margin-top: 4px; }
+
+    /* AdSense ins overrides */
+    .ad ins { position: relative; z-index: 1; }
+
+    /* Storlekar */
+    .ad-728x90  { width: 728px; max-width: 100%; height: 90px; }
+    .ad-300x250 { width: 300px; height: 250px; }
+    .ad-160x600 { width: 160px; height: 600px; }
+    .ad-160x250 { width: 160px; height: 250px; }
+    .ad-160x150 { width: 160px; height: 150px; }
+    .ad-970x250 { width: 100%; max-width: 970px; height: 250px; }
+    .ad-970x90  { width: 100%; max-width: 970px; height: 90px; }
+    .ad-320x50  { width: 320px; height: 50px; }
+    .ad-468x60  { width: 468px; max-width: 100%; height: 60px; }
+    .ad-300x600 { width: 300px; height: 600px; }
+
+    /* ── FLOOD ── */
+    .flood {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6px 4px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .flood-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .divider {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ff6a00, #ffe600, #ff6a00, transparent);
+      margin: 2px 0;
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: #2a2a2a;
+      text-align: center;
+      width: 100%;
+      padding: 2px 0;
+    }
+
+    /* ── STICKY ── */
+    .sticky-bottom {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: #0a0a1a;
+      border-top: 2px solid #ff6a00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px 40px 4px 4px;
+    }
+    .sticky-close {
+      position: absolute;
+      right: 8px;
+      background: #222;
+      border: 1px solid #333;
+      color: #888;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sticky-close:hover { background: #333; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0a0a1a; }
+    ::-webkit-scrollbar-thumb { background: #ff6a00; border-radius: 3px; }
+  </style>
 </head>
 <body>
-    <p>Hello world!</p>
+
+<!-- ══ ALLRA ÖVERSTA BANNER ══ -->
+<div class="banner-top">
+  <div class="ad ad-728x90">
+    <!-- AdSense: <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX"></ins> -->
+    <span class="icon">📢</span><span class="dim">728×90</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     HERO – SPELET I MITTEN, ADS RUNT OM
+═══════════════════════════════════════ -->
+<div class="hero">
+
+  <!-- TOPP-BAND -->
+  <div class="hero-top">
+    <div class="ad ad-728x90">
+      <span class="icon">📢</span><span class="dim">728×90 – Topp</span>
+    </div>
+  </div>
+
+  <!-- VÄNSTER -->
+  <div class="hero-left">
+    <div class="ad ad-160x600">
+      <span class="icon">📢</span><span class="dim">160×600</span>
+    </div>
+  </div>
+
+  <!-- SPELET -->
+  <div class="game-cell">
+    <iframe
+      seamless="seamless"
+      allowtransparency="true"
+      allowfullscreen="true"
+      frameborder="0"
+      src="https://zv1y2i8p.play.gamezop.com/g/9lpHai56Q">
+    </iframe>
+  </div>
+
+  <!-- HÖGER -->
+  <div class="hero-right">
+    <div class="ad ad-160x250"><span class="icon">📢</span><span class="dim">160×250</span></div>
+    <div class="ad ad-160x250"><span class="icon">📢</span><span class="dim">160×250</span></div>
+    <div class="ad ad-160x150"><span class="icon">📢</span><span class="dim">160×150</span></div>
+  </div>
+
+  <!-- BOTTEN-BAND -->
+  <div class="hero-bottom">
+    <div class="ad ad-728x90">
+      <span class="icon">📢</span><span class="dim">728×90 – Botten</span>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     AD FLOOD – SKROLLA NER I ANNONSHELVETE
+═══════════════════════════════════════ -->
+<div class="flood">
+
+  <div class="divider"></div>
+  <div class="section-label">▼ annons ▼</div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="ad ad-970x90"><span class="icon">📢</span><span class="dim">970×90 Leaderboard</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600 Half Page</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="ad ad-970x250"><span class="icon">📢</span><span class="dim">970×250 Billboard</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="ad ad-468x60"><span class="icon">📢</span><span class="dim">468×60</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="ad ad-970x90"><span class="icon">📢</span><span class="dim">970×90 Leaderboard</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="ad ad-970x250"><span class="icon">📢</span><span class="dim">970×250 Billboard</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="ad ad-970x90"><span class="icon">📢</span><span class="dim">970×90</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+    <div class="ad ad-300x600"><span class="icon">📢</span><span class="dim">300×600</span></div>
+  </div>
+
+  <div class="ad ad-970x250"><span class="icon">📢</span><span class="dim">970×250 – Sista</span></div>
+
+  <div class="flood-row">
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+    <div class="ad ad-300x250"><span class="icon">📢</span><span class="dim">300×250</span></div>
+  </div>
+
+  <div class="ad ad-970x90"><span class="icon">📢</span><span class="dim">970×90 – Absolut sista</span></div>
+
+</div><!-- /flood -->
+
+
+<!-- ══ STICKY BOTTOM ══ -->
+<div class="sticky-bottom" id="sticky">
+  <div class="ad ad-320x50">
+    <span class="icon" style="font-size:1rem">📢</span><span class="dim">Sticky 320×50</span>
+  </div>
+  <button class="sticky-close" onclick="document.getElementById('sticky').remove()">✕</button>
+</div>
+
 </body>
 </html>
